@@ -70,6 +70,12 @@ a{color:var(--accent)}
   font-size:14px;max-width:calc(100% - 32px);box-shadow:0 6px 24px rgba(0,0,0,.25)}
 .toast button{padding:6px 12px;font-size:14px;background:transparent;color:var(--ground);border-color:currentColor}
 details summary{cursor:pointer;font-weight:600}
+.pin{flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-color:var(--brass)}
+.pin-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pin-label{font-size:12px;font-weight:600;color:var(--brass);letter-spacing:.04em}
+.pin-code{font-family:var(--mono);font-weight:700;font-size:22px;user-select:all;-webkit-user-select:all}
+.pin-open{text-decoration:none;font-weight:600;font-size:15px;border-radius:12px;border:1px solid var(--brass);color:var(--ink);padding:10px 14px;white-space:nowrap}
+.pin .note{flex-basis:100%}
 footer{max-width:520px;margin:0 auto;padding-top:16px;text-align:center}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
@@ -82,6 +88,15 @@ footer{max-width:520px;margin:0 auto;padding-top:16px;text-align:center}
       <button class="lang" id="langBtn" lang="ar">العربية</button>
     </div>
   </header>
+
+  <section class="card pin" aria-labelledby="pinLabel">
+    <div class="pin-text">
+      <span class="pin-label" id="pinLabel" data-t="pinLabel">Contributor's code</span>
+      <span class="pin-code" dir="ltr" id="pinCode"></span>
+    </div>
+    <a class="pin-open" id="pinBtn" target="_blank" rel="noopener" data-t="open">Open in Nusuk</a>
+    <p class="note" data-t="pinNote">This page is shared for free. Please remember the person who made it in your duaa.</p>
+  </section>
 
   <section class="card" aria-label="Current code">
     <div class="code" id="code" dir="ltr">—</div>
@@ -135,6 +150,7 @@ const T = {
     placeholder: "Paste text with codes here", addBtn: "Add codes", list: "List", left: "left in list", usedAll: "used all time", rejected: "rejected",
     fetched: d => `Codes collected on ${d} from two shared code lists and a code dispenser. Codes nobody has opened yet come first.`,
     more: "Need more?", moreTail: "hands out a fresh one per tap.", goalTitle: "Daily goal", goalLabel: "Codes per day", undo: "Undo",
+    pinLabel: "Contributor's code", pinNote: "This page is shared for free. Please remember the person who made it in your duaa.",
     unofficial: "Unofficial community page. Not affiliated with Nusuk or the Ministry of Hajj and Umrah.",
     done: "All done", nothing: "Nothing queued", unopened: "unopened", opened: n => `opened ${n}×`, skippedBefore: "skipped before",
     src: {A:"List A", B:"List B", C:"Dispenser", P:"Pasted"},
@@ -150,6 +166,7 @@ const T = {
     placeholder: "الصق النص الذي يحتوي الأكواد هنا", addBtn: "أضف الأكواد", list: "القائمة", left: "متبقٍ في القائمة", usedAll: "مستخدم إجمالًا", rejected: "مرفوض",
     fetched: d => `جُمعت الأكواد في ${d} من قائمتين مشتركتين وموزّع أكواد. الأكواد التي لم يفتحها أحد تأتي أولًا.`,
     more: "تحتاج المزيد؟", moreTail: "يعطيك كودًا جديدًا مع كل ضغطة.", goalTitle: "الهدف اليومي", goalLabel: "عدد الأكواد في اليوم", undo: "تراجع",
+    pinLabel: "كود صاحب الصفحة", pinNote: "هذه الصفحة مجانية، فلا تنسَ صاحبها من صالح دعائك.",
     unofficial: "صفحة مجتمعية غير رسمية، لا علاقة لها بنسك أو وزارة الحج والعمرة.",
     done: "انتهت الأكواد", nothing: "لا يوجد أكواد تالية", unopened: "لم يُفتح", opened: n => `فُتح ${n} مرات`, skippedBefore: "تم تخطيه",
     src: {A:"قائمة أ", B:"قائمة ب", C:"الموزّع", P:"ملصوق"},
@@ -167,6 +184,9 @@ const L = () => T[lang];
 const today = () => new Date().toLocaleDateString("en-CA");
 const RX = /NG-[A-Za-z0-9]{8}/g;
 const LINK = "https://services.nusuk.sa/app/?p=27&id=";
+const PINNED = "NG-lk0vYI9O";   // contributor's code: always shown, never rotated or marked used
+document.getElementById("pinCode").textContent = PINNED;
+document.getElementById("pinBtn").href = LINK + PINNED;
 const $ = id => document.getElementById(id);
 const num = n => n.toLocaleString(lang === "ar" ? "ar-EG" : "en-US");
 
@@ -184,7 +204,7 @@ $("langBtn").onclick = () => { lang = L().otherLang; st.lang = lang; save(); app
 function allCodes(){
   const seen = new Set(), out = [];
   for (const c of st.pasted.concat(DATA.codes.map(r => Array.isArray(r) ? {code:r[0],src:r[1],at:r[2],opens:r[3]} : r))) {
-    if (seen.has(c.code)) continue; seen.add(c.code); out.push(c);
+    if (seen.has(c.code) || c.code === PINNED) continue; seen.add(c.code); out.push(c);
   }
   return out;
 }
