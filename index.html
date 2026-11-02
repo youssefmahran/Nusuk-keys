@@ -4,36 +4,43 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>Nusuk Codes | أكواد نسك</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
 /* Layout: one thumb-reachable column — today's tally, the current code card, then queue, import, sources. */
 :root{
   --ink:#14302b; --muted:#5d6f6a; --ground:#eef2f0; --surface:#ffffff; --line:#d4ddd9;
   --accent:#0f6b55; --accent-ink:#ffffff; --brass:#b07d1e; --warn:#a2401f; --soft:#e2ebe7;
-  --display:"Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display:"Familjen Grotesk", "IBM Plex Sans Arabic", "Helvetica Neue", Arial, sans-serif;
+  --body:"IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --ink:#e3ece8; --muted:#94a8a1; --ground:#0d1715; --surface:#15221f; --line:#263632; --accent:#3fbf97; --accent-ink:#06231b; --brass:#e0b153; --warn:#f08a63; --soft:#1c2d29; color-scheme:dark;}}
+  --ink:#e3ece8; --muted:#94a8a1; --ground:#0d1715; --surface:#15221f;
+  --line:#263632; --accent:#3fbf97; --accent-ink:#06231b; --brass:#e0b153; --warn:#f08a63; --soft:#1c2d29; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --ink:#e3ece8; --muted:#94a8a1; --ground:#0d1715; --surface:#15221f;
   --line:#263632; --accent:#3fbf97; --accent-ink:#06231b; --brass:#e0b153; --warn:#f08a63; --soft:#1c2d29; color-scheme:dark;}
+html[lang="ar"]{--display:"IBM Plex Sans Arabic", Tahoma, sans-serif; --body:"IBM Plex Sans Arabic", Tahoma, system-ui, sans-serif}
 *{box-sizing:border-box}
-body{background:var(--ground);color:var(--ink);font:400 15px/1.5 var(--body);
+body{background:var(--ground);color:var(--ink);font:400 15px/1.55 var(--body);
   padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
 main{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
 h1{font-size:26px;letter-spacing:-.01em}
 h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+html[lang="ar"] h2{letter-spacing:0;font-size:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top-end{display:flex;align-items:center;gap:12px}
+.lang{font:600 13px var(--body);padding:6px 12px;border-radius:99px}
 .tally{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
 .tally b{color:var(--ink);font-size:22px}
+html[lang="ar"] .tally{font-family:var(--body)}
 .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--brass);width:0;transition:width .3s}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
 .code{font-family:var(--mono);font-weight:700;font-size:clamp(28px,9vw,40px);letter-spacing:.02em;text-align:center;
   user-select:all;-webkit-user-select:all;word-break:break-all;padding-block:6px}
+.code.empty{font-family:var(--display);font-size:24px}
 .meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .chip{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--soft);color:var(--muted)}
 .chip.fresh{color:var(--accent)}
@@ -47,8 +54,9 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid va
 .row button{font-size:14px;padding:12px}
 .reject{color:var(--warn)}
 .queue{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.queue li{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:14px}
-.queue li span:last-child{font-family:var(--body);color:var(--muted);font-size:12px}
+.queue li{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:14px}
+.queue li span:first-child{font-family:var(--mono)}
+.queue li span:last-child{color:var(--muted);font-size:12px}
 textarea{width:100%;min-height:110px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);
   font:14px/1.4 var(--mono);padding:12px;resize:vertical}
 .note{color:var(--muted);font-size:13px;margin:0}
@@ -61,72 +69,117 @@ a{color:var(--accent)}
   background:var(--ink);color:var(--ground);border-radius:12px;padding:10px 10px 10px 16px;display:flex;gap:12px;align-items:center;
   font-size:14px;max-width:calc(100% - 32px);box-shadow:0 6px 24px rgba(0,0,0,.25)}
 .toast button{padding:6px 12px;font-size:14px;background:transparent;color:var(--ground);border-color:currentColor}
-.done{text-align:center;color:var(--muted);padding:20px}
 details summary{cursor:pointer;font-weight:600}
+footer{max-width:520px;margin:0 auto;padding-top:16px;text-align:center}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 </style>
 </head><body>
 
 <main>
   <header class="top">
-    <h1>Door Keys</h1>
-    <div class="tally"><b id="todayN">0</b> / <span id="goalN">300</span> today</div>
+    <h1 id="brand">Door Keys</h1>
+    <div class="top-end">
+      <button class="lang" id="langBtn" lang="ar">العربية</button>
+    </div>
   </header>
-  <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 
   <section class="card" aria-label="Current code">
-    <div class="code" id="code">—</div>
+    <div class="code" id="code" dir="ltr">—</div>
     <div class="meta" id="meta"></div>
-    <a class="copy" id="copyBtn" href="#" target="_blank" rel="noopener">Open in Nusuk</a>
+    <a class="copy" id="copyBtn" href="#" target="_blank" rel="noopener" data-t="open">Open in Nusuk</a>
     <div class="row">
-      <button id="skipBtn">Skip for now</button>
-      <button class="reject" id="badBtn">App rejected it</button>
+      <button id="skipBtn" data-t="skip">Skip for now</button>
+      <button class="reject" id="badBtn" data-t="bad">App rejected it</button>
     </div>
-    <p class="note">Tapping opens the code's invite link in Nusuk and marks it used, then the next code comes up.</p>
+    <p class="note" data-t="openNote">Tapping opens the code's invite link in Nusuk and marks it used, then the next code comes up.</p>
   </section>
 
   <section class="card">
-    <h2>Up next</h2>
+    <h2 data-t="upNext">Up next</h2>
     <ul class="queue" id="queue"></ul>
   </section>
 
   <section class="card">
-    <h2>Add codes from a post</h2>
-    <label for="paste" class="note">Paste a Facebook post or comment thread. Anything shaped like NG-XXXXXXXX is picked out; duplicates and codes you've used are skipped.</label>
-    <textarea id="paste" placeholder="Paste text with codes here"></textarea>
-    <button id="importBtn">Add codes</button>
+    <h2 data-t="addTitle">Add codes from a post</h2>
+    <label for="paste" class="note" data-t="addNote">Paste a Facebook post or comment thread. Anything shaped like NG-XXXXXXXX is picked out; duplicates and codes you've used are skipped.</label>
+    <textarea id="paste" dir="ltr" placeholder="Paste text with codes here"></textarea>
+    <button id="importBtn" data-t="addBtn">Add codes</button>
     <p class="note" id="importMsg" aria-live="polite"></p>
   </section>
 
   <section class="card">
-    <h2>List</h2>
+    <h2 data-t="list">List</h2>
     <div class="stats">
-      <div><b id="leftN">0</b><span>left in list</span></div>
-      <div><b id="usedN">0</b><span>used all time</span></div>
-      <div><b id="badN">0</b><span>rejected</span></div>
+      <div><b id="leftN">0</b><span data-t="left">left in list</span></div>
+      <div><b id="usedN">0</b><span data-t="usedAll">used all time</span></div>
+      <div><b id="badN">0</b><span data-t="rejected">rejected</span></div>
     </div>
-    <p class="note">Codes collected <span id="fetched"></span> from the two shared code lists and the code dispenser. Codes nobody has opened yet come first.</p>
-    <p class="note">Need more? <a href="https://nusuk-code.pages.dev/" target="_blank" rel="noopener">nusuk-code.pages.dev</a> hands out a fresh one per tap.</p>
-    <details>
-      <summary>Daily goal</summary>
-      <p class="note"><label for="goal">Codes per day</label> <input id="goal" type="number" min="1" max="2000" value="300" style="width:90px;font:inherit;padding:4px"></p>
-    </details>
+    <p class="note" id="fetched"></p>
+    <p class="note"><span data-t="more">Need more?</span> <a href="https://nusuk-code.pages.dev/" target="_blank" rel="noopener" dir="ltr">nusuk-code.pages.dev</a> <span data-t="moreTail">hands out a fresh one per tap.</span></p>
   </section>
 </main>
-<div class="toast" id="toast" hidden><span id="toastMsg"></span><button id="undoBtn">Undo</button></div>
+<footer><p class="note" data-t="unofficial">Unofficial community page. Not affiliated with Nusuk or the Ministry of Hajj and Umrah.</p></footer>
+<div class="toast" id="toast" hidden><span id="toastMsg"></span><button id="undoBtn" data-t="undo">Undo</button></div>
 
 <script>window.SITE={lang:"ar",brand_en:"Nusuk Codes",brand_ar:"أكواد نسك"}</script>
 <script src="codes.js"></script>
 <script>
 const DATA = window.CODES || {"fetched":"","codes":[]};
-const SRC = {A:"List A", B:"List B", C:"Dispenser", P:"Pasted"};
+const SITE = window.SITE || {};
+const T = {
+  en: {
+    brand: SITE.brand_en || "Door Keys", today: "today", open: "Open in Nusuk", skip: "Skip for now", bad: "App rejected it",
+    openNote: "Tapping opens the code's invite link in Nusuk and marks it used, then the next code comes up.",
+    upNext: "Up next", addTitle: "Add codes from a post",
+    addNote: "Paste a Facebook post or comment thread. Anything shaped like NG-XXXXXXXX is picked out; duplicates and codes you've used are skipped.",
+    placeholder: "Paste text with codes here", addBtn: "Add codes", list: "List", left: "left in list", usedAll: "used all time", rejected: "rejected",
+    fetched: d => `Codes collected on ${d} from two shared code lists and a code dispenser. Codes nobody has opened yet come first.`,
+    more: "Need more?", moreTail: "hands out a fresh one per tap.", goalTitle: "Daily goal", goalLabel: "Codes per day", undo: "Undo",
+    unofficial: "Unofficial community page. Not affiliated with Nusuk or the Ministry of Hajj and Umrah.",
+    done: "All done", nothing: "Nothing queued", unopened: "unopened", opened: n => `opened ${n}×`, skippedBefore: "skipped before",
+    src: {A:"List A", B:"List B", C:"Dispenser", P:"Pasted"},
+    tOpened: c => `Opened ${c}, marked used`, tSkipped: c => `Skipped ${c}`, tBad: c => `Marked ${c} as rejected`,
+    added: (a, d) => `Added ${a} new code${a==="1"?"":"s"} to the front of the line.${d ? ` ${d} already in your list.` : ""}`,
+    noneFound: "No codes found. Codes look like NG- followed by 8 letters or digits.", other: "العربية", otherLang: "ar"
+  },
+  ar: {
+    brand: SITE.brand_ar || "مفاتيح الأبواب", today: "اليوم", open: "افتح في نسك", skip: "تخطَّ الآن", bad: "التطبيق رفضه",
+    openNote: "الضغط يفتح رابط دعوة الكود في نسك ويعلّمه كمستخدم، ثم يظهر الكود التالي.",
+    upNext: "التالي", addTitle: "أضف أكواد من منشور",
+    addNote: "الصق منشور فيسبوك أو سلسلة تعليقات. سيتم التقاط أي كود بالشكل NG-XXXXXXXX، وتُتجاهل الأكواد المكررة والمستخدمة.",
+    placeholder: "الصق النص الذي يحتوي الأكواد هنا", addBtn: "أضف الأكواد", list: "القائمة", left: "متبقٍ في القائمة", usedAll: "مستخدم إجمالًا", rejected: "مرفوض",
+    fetched: d => `جُمعت الأكواد في ${d} من قائمتين مشتركتين وموزّع أكواد. الأكواد التي لم يفتحها أحد تأتي أولًا.`,
+    more: "تحتاج المزيد؟", moreTail: "يعطيك كودًا جديدًا مع كل ضغطة.", goalTitle: "الهدف اليومي", goalLabel: "عدد الأكواد في اليوم", undo: "تراجع",
+    unofficial: "صفحة مجتمعية غير رسمية، لا علاقة لها بنسك أو وزارة الحج والعمرة.",
+    done: "انتهت الأكواد", nothing: "لا يوجد أكواد تالية", unopened: "لم يُفتح", opened: n => `فُتح ${n} مرات`, skippedBefore: "تم تخطيه",
+    src: {A:"قائمة أ", B:"قائمة ب", C:"الموزّع", P:"ملصوق"},
+    tOpened: c => `تم فتح ${c} وتعليمه كمستخدم`, tSkipped: c => `تم تخطي ${c}`, tBad: c => `تم تعليم ${c} كمرفوض`,
+    added: (a, d) => `أُضيف ${a} كود جديد في أول القائمة.${d ? ` ${d} موجود بالفعل.` : ""}`,
+    noneFound: "لم يتم العثور على أكواد. الكود يبدأ بـ NG- وبعده 8 حروف أو أرقام إنجليزية.", other: "English", otherLang: "en"
+  }
+};
 const KEY = "doorkeys.v1";
-let st = {used:{}, bad:{}, skip:{}, pasted:[], goal:300};
+let st = {used:{}, bad:{}, skip:{}, pasted:[], goal:300, lang:null};
 try { Object.assign(st, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch(e) {}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+let lang = st.lang || SITE.lang || "en";
+const L = () => T[lang];
 const today = () => new Date().toLocaleDateString("en-CA");
 const RX = /NG-[A-Za-z0-9]{8}/g;
 const LINK = "https://services.nusuk.sa/app/?p=27&id=";
+const $ = id => document.getElementById(id);
+const num = n => n.toLocaleString(lang === "ar" ? "ar-EG" : "en-US");
+
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = L()[el.dataset.t]; });
+  $("brand").textContent = L().brand; document.title = L().brand;
+  $("paste").placeholder = L().placeholder;
+  $("langBtn").textContent = L().other; $("langBtn").lang = L().otherLang;
+  render();
+}
+$("langBtn").onclick = () => { lang = L().otherLang; st.lang = lang; save(); applyLang(); };
 
 function allCodes(){
   const seen = new Set(), out = [];
@@ -142,38 +195,29 @@ function rebuild(){
   const skipped = all.filter(c => !st.used[c.code] && !st.bad[c.code] && st.skip[c.code]);
   pool = fresh.concat(skipped);
 }
-const $ = id => document.getElementById(id);
 
 function render(){
-  const cur = pool[0];
-  $("code").textContent = cur ? cur.code : "All done";
+  const cur = pool[0], t = L();
+  $("code").textContent = cur ? cur.code : t.done;
+  $("code").classList.toggle("empty", !cur);
   $("meta").innerHTML = "";
   if (cur) {
-    const chips = [SRC[cur.src] || cur.src];
-    if (cur.opens === 0) chips.push("unopened"); else if (cur.opens != null) chips.push(`opened ${cur.opens}×`);
-    if (st.skip[cur.code]) chips.push("skipped before");
-    chips.forEach((t,i) => { const s=document.createElement("span"); s.className="chip"+(t==="unopened"?" fresh":""); s.textContent=t; $("meta").append(s); });
+    const chips = [[t.src[cur.src] || cur.src, ""]];
+    if (cur.opens === 0) chips.push([t.unopened, " fresh"]); else if (cur.opens != null) chips.push([t.opened(num(cur.opens)), ""]);
+    if (st.skip[cur.code]) chips.push([t.skippedBefore, ""]);
+    chips.forEach(([txt, cls]) => { const s=document.createElement("span"); s.className="chip"+cls; s.textContent=txt; $("meta").append(s); });
   }
   ["skipBtn","badBtn"].forEach(id => $(id).disabled = !cur);
   $("copyBtn").href = cur ? LINK + encodeURIComponent(cur.code) : "#";
   $("copyBtn").setAttribute("aria-disabled", cur ? "false" : "true");
   const q = $("queue"); q.innerHTML = "";
-  pool.slice(1,6).forEach(c => { const li=document.createElement("li"); li.innerHTML=`<span></span><span></span>`;
-    li.children[0].textContent=c.code; li.children[1].textContent=SRC[c.src]||c.src; q.append(li); });
-  if (pool.length <= 1) q.innerHTML = '<li><span>Nothing queued</span><span></span></li>';
-  const n = Object.values(st.used).filter(d => d === today()).length;
-  $("todayN").textContent = n; $("goalN").textContent = st.goal; $("goal").value = st.goal;
-  $("bar").style.width = Math.min(100, n / st.goal * 100) + "%";
-  $("leftN").textContent = pool.length.toLocaleString();
-  $("usedN").textContent = Object.keys(st.used).length.toLocaleString();
-  $("badN").textContent = Object.keys(st.bad).length.toLocaleString();
-  $("fetched").textContent = DATA.fetched ? "on " + DATA.fetched : "";
-}
-
-async function copyText(t){
-  try { await navigator.clipboard.writeText(t); return true; } catch(e) {}
-  try { const ta=document.createElement("textarea"); ta.value=t; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.opacity="0";
-    document.body.append(ta); ta.select(); ta.setSelectionRange(0,t.length); const ok=document.execCommand("copy"); ta.remove(); return ok; } catch(e) { return false; }
+  pool.slice(1,6).forEach(c => { const li=document.createElement("li"); li.innerHTML=`<span dir="ltr"></span><span></span>`;
+    li.children[0].textContent=c.code; li.children[1].textContent=t.src[c.src]||c.src; q.append(li); });
+  if (pool.length <= 1) { const li=document.createElement("li"); li.textContent=t.nothing; q.append(li); }
+  $("leftN").textContent = num(pool.length);
+  $("usedN").textContent = num(Object.keys(st.used).length);
+  $("badN").textContent = num(Object.keys(st.bad).length);
+  $("fetched").textContent = DATA.fetched ? t.fetched(DATA.fetched) : "";
 }
 
 let undo = null, toastTimer;
@@ -181,12 +225,12 @@ function toast(msg, undoFn){
   undo = undoFn; $("toastMsg").textContent = msg; $("undoBtn").hidden = !undoFn; $("toast").hidden = false;
   clearTimeout(toastTimer); toastTimer = setTimeout(() => { $("toast").hidden = true; undo = null; }, 4000);
 }
-function act(field, value, msg){
+function act(field, value, msgFn){
   const c = pool[0]; if (!c) return;
   const prev = {used:st.used[c.code], bad:st.bad[c.code], skip:st.skip[c.code]};
   st[field][c.code] = value; if (field !== "skip") delete st.skip[c.code];
   save(); rebuild(); render();
-  toast(msg.replace("%", c.code), () => {
+  toast(msgFn(c.code), () => {
     for (const k of ["used","bad","skip"]) { if (prev[k] === undefined) delete st[k][c.code]; else st[k][c.code] = prev[k]; }
     save(); rebuild(); render(); $("toast").hidden = true;
   });
@@ -194,12 +238,11 @@ function act(field, value, msg){
 $("copyBtn").addEventListener("click", e => {
   if (!pool[0]) { e.preventDefault(); return; }
   // let the browser follow the link (href already set), then advance
-  setTimeout(() => act("used", today(), "Opened %, marked used"), 0);
+  setTimeout(() => act("used", today(), L().tOpened), 0);
 });
-$("skipBtn").onclick = () => act("skip", 1, "Skipped %");
-$("badBtn").onclick = () => act("bad", today(), "Marked % as rejected");
+$("skipBtn").onclick = () => act("skip", 1, L().tSkipped);
+$("badBtn").onclick = () => act("bad", today(), L().tBad);
 $("undoBtn").onclick = () => undo && undo();
-$("goal").onchange = e => { st.goal = Math.max(1, +e.target.value || 300); save(); render(); };
 $("importBtn").onclick = () => {
   const found = [...new Set(($("paste").value.match(RX) || []))];
   const known = new Set(allCodes().map(c => c.code));
@@ -209,11 +252,9 @@ $("importBtn").onclick = () => {
     st.pasted.unshift({code, src:"P", at:new Date().toISOString().slice(0,16).replace("T"," "), opens:0}); added++;
   }
   save(); rebuild(); render(); $("paste").value = "";
-  $("importMsg").textContent = found.length
-    ? `Added ${added} new code${added===1?"":"s"} to the front of the line.${dupe ? ` ${dupe} already in your list.` : ""}`
-    : "No codes found. Codes look like NG- followed by 8 letters or digits.";
+  $("importMsg").textContent = found.length ? L().added(num(added), dupe ? num(dupe) : 0) : L().noneFound;
 };
-rebuild(); render();
+rebuild(); applyLang();
 </script>
 
 </body></html>
